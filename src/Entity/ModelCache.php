@@ -9,7 +9,7 @@ use Swoft\Redis\Redis;
 
 class ModelCache extends Model
 {
-    const CACHE_KEY = 'entity:cache:app:%s:i:%s:t:%s:%s:%s';
+    const CACHE_KEY = 'entity:cache:%s:i:%s:t:%s:%s:%s';
 
     protected static function getCacheKey($id)
     {
