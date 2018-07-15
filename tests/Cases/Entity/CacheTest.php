@@ -48,6 +48,6 @@ class CacheTest extends AbstractMysqlCase
     public function testModelCacheConfig()
     {
         $config = bean(ModelCacheConfig::class);
-        
+        $this->assertEquals(env('ENTITY_CACHE_TTL'), $config->getTtl());
     }
 }
