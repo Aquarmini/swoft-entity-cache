@@ -56,6 +56,8 @@ class CacheTest extends AbstractMysqlCase
         $user = new User();
         $user->setName($name);
         $user->setRoleId(1);
+        $user->setUpdatedAt(date('Y-m-d H:i:s'));
+        $user->setCreatedAt(date('Y-m-d H:i:s'));
         $id = $user->save()->getResult();
         $this->assertTrue($id > 0);
         $this->assertEquals($name, $user->getName());
