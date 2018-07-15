@@ -17,6 +17,13 @@ class ModelCache extends Model
 {
     const CACHE_KEY = 'entity:cache:%s:i:%s:t:%s:%s:%s';
 
+    /**
+     * 获取缓存KEY
+     * @author limx
+     * @param $id
+     * @return string
+     * @throws DbException
+     */
     protected static function getCacheKey($id)
     {
         $collect = EntityCollector::getCollector();
@@ -31,22 +38,39 @@ class ModelCache extends Model
         return sprintf(static::CACHE_KEY, APP_NAME, $instance, $table, $idColumn, $id);
     }
 
+    /**
+     * 从缓存中获得模型实体
+     * @author limx
+     * @param $id
+     * @return object|Model
+     */
     public static function findOneByCache($id)
     {
         $className = get_called_class();
         $key = static::getCacheKey($id);
         $redis = bean(Redis::class);
         if ($redis->exists($key)) {
-            $data = $redis->hGetAll($key);
-            $entity = EntityHelper::arrayToEntity($data, $className);
-            return $entity;
+            if ($redis->type($key) === \Redis::REDIS_HASH) {
+                $data = $redis->hGetAll($key);
+                $entity = EntityHelper::arrayToEntity($data, $className);
+                return $entity;
+            } else {
+                return null;
+            }
         }
 
         /** @var Model $object */
         $object = static::findById($id)->getResult();
-        $attrs = $object->getAttrs();
-        $redis->hMset($key, $attrs);
-        $redis->expire($key, env('ENTITY_CACHE_TTL', 3600));
+        if ($object instanceof $className) {
+            $attrs = $object->getAttrs();
+            $redis->hMset($key, $attrs);
+            $redis->expire($key, env('ENTITY_CACHE_TTL', 3600));
+        } elseif (is_null($object)) {
+            $redis->set($key, null, env('ENTITY_CACHE_TTL', 3600));
+        }
+
         return $object;
     }
+
+
 }

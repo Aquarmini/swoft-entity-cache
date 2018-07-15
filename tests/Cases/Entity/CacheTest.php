@@ -33,4 +33,13 @@ class CacheTest extends AbstractMysqlCase
 
         $this->assertEquals($user, $user2);
     }
+
+    public function testFindNotExist()
+    {
+        $user = User::findOneByCache(11111);
+        $this->assertNull($user);
+
+        $user = User::findOneByCache(11111);
+        $this->assertNull($user);
+    }
 }
