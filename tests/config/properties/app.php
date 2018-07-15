@@ -8,15 +8,16 @@
  * @license  https://github.com/swoft-cloud/swoft/blob/master/LICENSE
  */
 
-$root = alias('@root');
+$beanScan = [
+    'SwoftTest\\Db\\Testing' => BASE_PATH . '/Testing',
+];
+
+$beanScan = array_merge($beanScan, \Xin\Swoft\Db\Entity\Helper\BeanHelper::getBeanScan());
 
 return [
     'version' => '1.0',
     'autoInitBean' => true,
-    'beanScan' => [
-        'SwoftTest\\Db\\Testing' => BASE_PATH . '/Testing',
-        'Xin\\Swoft\\Db\\Entity' => $root . '/../src/Entity',
-    ],
+    'beanScan' => $beanScan,
     'I18n' => [
         'sourceLanguage' => '@root/resources/messages/',
     ],

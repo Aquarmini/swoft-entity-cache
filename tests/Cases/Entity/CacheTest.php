@@ -16,6 +16,7 @@ namespace SwoftTest\Db\Cases\Entity;
 use SwoftTest\Db\Cases\AbstractMysqlCase;
 use SwoftTest\Db\Testing\Entity\User;
 use Xin\Swoft\Db\Entity\Config\ModelCacheConfig;
+use Xin\Swoft\Db\Entity\Helper\BeanHelper;
 
 class CacheTest extends AbstractMysqlCase
 {
@@ -47,6 +48,6 @@ class CacheTest extends AbstractMysqlCase
     public function testModelCacheConfig()
     {
         $config = bean(ModelCacheConfig::class);
-        print_r($config);
+        
     }
 }
