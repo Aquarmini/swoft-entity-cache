@@ -16,7 +16,6 @@ namespace SwoftTest\Db\Cases\Entity;
 use SwoftTest\Db\Cases\AbstractMysqlCase;
 use SwoftTest\Db\Testing\Entity\User;
 use Xin\Swoft\Db\Entity\Config\ModelCacheConfig;
-use Xin\Swoft\Db\Entity\ModelCacheMode;
 
 class CacheTest extends AbstractMysqlCase
 {
