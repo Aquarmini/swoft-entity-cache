@@ -1,4 +1,10 @@
 <?php
+/**
+ * Swoft Entity Cache
+ *
+ * @author   limx <715557344@qq.com>
+ * @link     https://github.com/limingxinleo/swoft-entity-cache
+ */
 namespace SwoftTest\Db\Testing\Entity;
 
 use Xin\Swoft\Db\Entity\ModelCache;
@@ -7,7 +13,6 @@ use Swoft\Db\Bean\Annotation\Entity;
 use Swoft\Db\Bean\Annotation\Id;
 use Swoft\Db\Bean\Annotation\Required;
 use Swoft\Db\Bean\Annotation\Table;
-use Swoft\Db\Types;
 
 /**
  * 用户表
@@ -147,5 +152,4 @@ class User extends ModelCache
     {
         return $this->updatedAt;
     }
-
 }

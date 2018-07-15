@@ -1,18 +1,16 @@
 <?php
 /**
- * This file is part of Swoft.
+ * Swoft Entity Cache
  *
- * @link     https://swoft.org
- * @document https://doc.swoft.org
- * @contact  group@swoft.org
- * @license  https://github.com/swoft-cloud/swoft/blob/master/LICENSE
+ * @author   limx <715557344@qq.com>
+ * @link     https://github.com/limingxinleo/swoft-entity-cache
  */
 require_once dirname(dirname(__FILE__)) . '/vendor/autoload.php';
 require_once dirname(dirname(__FILE__)) . '/tests/config/define.php';
 
-Swoole\Coroutine::set(array(
+Swoole\Coroutine::set([
     'max_coroutine' => 40960,
-));
+]);
 
 // init
 \Swoft\Bean\BeanFactory::init();

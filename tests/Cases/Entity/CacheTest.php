@@ -1,5 +1,10 @@
 <?php
-// +----------------------------------------------------------------------
+/**
+ * Swoft Entity Cache
+ *
+ * @author   limx <715557344@qq.com>
+ * @link     https://github.com/limingxinleo/swoft-entity-cache
+ */
 // | EventTest.php [ WE CAN DO IT JUST THINK IT ]
 // +----------------------------------------------------------------------
 // | Copyright (c) 2016-2017 limingxinleo All rights reserved.
@@ -8,8 +13,6 @@
 // +----------------------------------------------------------------------
 namespace SwoftTest\Db\Cases\Entity;
 
-use Swoft\App;
-use Swoft\Db\Bean\Collector\EntityCollector;
 use SwoftTest\Db\Cases\AbstractMysqlCase;
 use SwoftTest\Db\Testing\Entity\User;
 
