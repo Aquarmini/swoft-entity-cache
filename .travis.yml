@@ -32,7 +32,7 @@ install:
   - wget https://github.com/redis/hiredis/archive/v0.13.3.tar.gz -O hiredis.tar.gz && mkdir -p hiredis && tar -xf hiredis.tar.gz -C hiredis --strip-components=1 && cd hiredis && sudo make -j$(nproc) && sudo make install && sudo ldconfig && cd ..
   - printf "\n" | pecl install --force swoole
   - phpenv config-rm xdebug.ini
-  - phpenv config-add test/_ci/ci.ini
+  - phpenv config-add tests/_ci/ci.ini
   - bash tests/_ci/setup_dbs.sh
   - cp -rf $TRAVIS_BUILD_DIR/tests/.env.example $TRAVIS_BUILD_DIR/tests/.env
   # 安装项目
