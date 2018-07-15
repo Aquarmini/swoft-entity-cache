@@ -16,7 +16,7 @@ namespace SwoftTest\Db\Cases\Entity;
 use SwoftTest\Db\Cases\AbstractMysqlCase;
 use SwoftTest\Db\Testing\Entity\User;
 use Xin\Swoft\Db\Entity\Config\ModelCacheConfig;
-use Xin\Swoft\Db\Entity\Helper\BeanHelper;
+use Xin\Swoft\Db\Entity\ModelCacheMode;
 
 class CacheTest extends AbstractMysqlCase
 {
@@ -49,5 +49,33 @@ class CacheTest extends AbstractMysqlCase
     {
         $config = bean(ModelCacheConfig::class);
         $this->assertEquals(env('ENTITY_CACHE_TTL'), $config->getTtl());
+    }
+
+    public function testUpdateAndDelete()
+    {
+        $name = 'oldName' . uniqid();
+        $user = new User();
+        $user->setName($name);
+        $user->setRoleId(1);
+        $id = $user->save()->getResult();
+        $this->assertTrue($id > 0);
+        $this->assertEquals($name, $user->getName());
+
+        $newName = 'newName' . uniqid();
+        $user = User::findOneByCache($id);
+        $user->setName($newName);
+        $row = $user->update()->getResult();
+        $this->assertEquals(1, $row);
+        $this->assertEquals($newName, $user->getName());
+
+        $user = User::findOneByCache($id);
+        $this->assertEquals($newName, $user->getName());
+
+        $user->delete()->getResult();
+        $user = User::findOneByCache($id);
+        $this->assertNull($user);
+
+        $user = User::findById($id)->getResult();
+        $this->assertNull($user);
     }
 }

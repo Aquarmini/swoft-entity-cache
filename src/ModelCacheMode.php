@@ -7,9 +7,11 @@
  */
 namespace Xin\Swoft\Db\Entity;
 
-use Swoft\Db\Model;
-
-class ModelCache extends Model
+class ModelCacheMode
 {
-    use ModelCacheable;
+    const DELETE_CACHE_BEFORE_UPDATE = 1;
+
+    const DELETE_CACHE_AFTER_UPDATE = 2;
+
+    const RELOAD_CACHE_AFTER_UPDATE = 3;
 }
