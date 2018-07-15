@@ -1,0 +1,39 @@
+{
+    "name": "limingxinleo/swoft-entity-cache",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "php",
+        "swoole",
+        "swoft",
+        "db",
+        "model"
+    ],
+    "description": "Swoft 模型实体缓存",
+    "authors": [
+        {
+            "name": "李铭昕",
+            "email": "715557344@qq.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Xin\\Swoft\\Db\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SwoftTest\\Db\\": "tests"
+        }
+    },
+    "require": {
+        "php": ">=7.0",
+        "swoft/framework": "^1.0",
+        "swoft/db": "^1.0",
+        "swoft/redis": "^1.0"
+    },
+    "require-dev": {
+        "swoft/swoole-ide-helper": "dev-master",
+        "phpunit/phpunit": "^5.7"
+    }
+}
