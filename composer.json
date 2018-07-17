@@ -18,7 +18,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Xin\\Swoft\\Db\\Entity\\": "src/"
+            "Swoftx\\Db\\Entity\\": "src/"
         }
     },
     "autoload-dev": {

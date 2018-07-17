@@ -5,16 +5,16 @@
  * @author   limx <715557344@qq.com>
  * @link     https://github.com/limingxinleo/swoft-entity-cache
  */
-namespace Xin\Swoft\Db\Entity\Config;
+namespace Swoftx\Db\Entity\Config;
 
 use Swoft\Bean\Annotation\Bean;
 use Swoft\Bean\Annotation\Value;
-use Xin\Swoft\Db\Entity\ModelCacheMode;
+use Swoftx\Db\Entity\ModelCacheMode;
 
 /**
  * Class ModelCacheConfig
  * @Bean
- * @package Xin\Swoft\Db\Entity\Config
+ * @package Swoftx\Db\Entity\Config
  */
 class ModelCacheConfig
 {

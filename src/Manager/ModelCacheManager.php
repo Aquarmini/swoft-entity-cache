@@ -5,13 +5,13 @@
  * @author   limx <715557344@qq.com>
  * @link     https://github.com/limingxinleo/swoft-entity-cache
  */
-namespace Xin\Swoft\Db\Entity\Manager;
+namespace Swoftx\Db\Entity\Manager;
 
 use Swoft\App;
 use Swoft\Db\Bean\Collector\EntityCollector;
 use Swoft\Db\Exception\DbException;
-use Xin\Swoft\Db\Entity\Config\ModelCacheConfig;
-use Xin\Swoft\Db\Entity\Helper\EntityHelper;
+use Swoftx\Db\Entity\Config\ModelCacheConfig;
+use Swoftx\Db\Entity\Helper\EntityHelper;
 use Swoft\Db\Model;
 use Swoft\Redis\Redis;
 

@@ -7,7 +7,7 @@
  */
 namespace SwoftTest\Db\Testing\Entity;
 
-use Xin\Swoft\Db\Entity\ModelCache;
+use Swoftx\Db\Entity\ModelCache;
 use Swoft\Db\Bean\Annotation\Column;
 use Swoft\Db\Bean\Annotation\Entity;
 use Swoft\Db\Bean\Annotation\Id;
