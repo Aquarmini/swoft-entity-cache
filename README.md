@@ -42,8 +42,10 @@ $customBean = [
     'App\\Biz',
     'App\\Config',
     'App\\Jobs',
+    'Swoftx\\Db\\Entity\\', // swoft/frameword v1.0.22以上版本才兼容这种写法
 ];
 
+// swoft/frameword 全版本兼容的写法
 $entityCacheBean = BeanHelper::getEntityCacheBeanScan();
 $beanScan = array_merge($beanScan, $customBean, $entityCacheBean);
 return $beanScan;
