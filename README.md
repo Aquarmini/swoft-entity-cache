@@ -12,45 +12,17 @@ ENTITY_PREFIX=prefix
 ~~~
 
 ## 使用
-config/properties/app.php中增加对应beanScan
+config/properties/app.php中增加对应自定义组件
+
 ~~~
 return [
     ...
-    'components' => require __DIR__ . DS . 'beanScan.php',
+    'components' => [
+        'custom' => [
+            'Swoftx\\Db\\Entity\\',
+        ],
+    ],
 ];
-
-# beanScan.php 如下
-
-use Swoftx\Db\Entity\Helper\BeanHelper;
-
-$beanScan = [
-    'App\\Breaker',
-    'App\\Controllers',
-    'App\\Core',
-    'App\\Exception',
-    'App\\Fallback',
-    'App\\Lib',
-    'App\\Listener',
-    'App\\Middlewares',
-    'App\\Models',
-    'App\\Pool',
-    'App\\Process',
-    'App\\Services',
-    'App\\Tasks',
-    'App\\WebSocket',
-];
-
-$customBean = [
-    'App\\Biz',
-    'App\\Config',
-    'App\\Jobs',
-    'Swoftx\\Db\\Entity\\', // swoft/frameword v1.0.22以上版本才兼容这种写法
-];
-
-// swoft/frameword 全版本兼容的写法
-$entityCacheBean = BeanHelper::getEntityCacheBeanScan();
-$beanScan = array_merge($beanScan, $customBean, $entityCacheBean);
-return $beanScan;
 ~~~
 
 修改实体基类，增加ModelCacheable Trait
