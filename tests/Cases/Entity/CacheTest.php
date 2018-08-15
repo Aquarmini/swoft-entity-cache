@@ -35,6 +35,13 @@ class CacheTest extends AbstractMysqlCase
         $this->assertEquals($user, $user2);
     }
 
+    public function testFindByCo()
+    {
+        go(function () {
+            $this->testFind();
+        });
+    }
+
     public function testFindNotExist()
     {
         $user = User::findOneByCache(11111);
@@ -44,10 +51,25 @@ class CacheTest extends AbstractMysqlCase
         $this->assertNull($user);
     }
 
+    public function testFindNotExistByCo()
+    {
+        go(function () {
+            $this->testFindNotExist();
+        });
+    }
+
     public function testModelCacheConfig()
     {
         $config = bean(ModelCacheConfig::class);
         $this->assertEquals(env('ENTITY_CACHE_TTL'), $config->getTtl());
+        $this->assertEquals(env('ENTITY_CACHE_PREFIX'), $config->getPrefix());
+    }
+
+    public function testModelCacheConfigByCo()
+    {
+        go(function () {
+            $this->testModelCacheConfig();
+        });
     }
 
     public function testUpdateAndDelete()
@@ -78,5 +100,12 @@ class CacheTest extends AbstractMysqlCase
 
         $user = User::findById($id)->getResult();
         $this->assertNull($user);
+    }
+
+    public function testUpdateAndDeleteByCo()
+    {
+        go(function () {
+            $this->testUpdateAndDelete();
+        });
     }
 }

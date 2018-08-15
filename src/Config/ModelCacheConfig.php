@@ -25,7 +25,7 @@ class ModelCacheConfig
     protected $cacheKey = 'entity:cache:%s:i:%s:t:%s:%s:%s';
 
     /**
-     * @Value(env="${ENTITY_PREFIX}")
+     * @Value(env="${ENTITY_CACHE_PREFIX}")
      * @var string
      */
     protected $prefix = APP_NAME;
