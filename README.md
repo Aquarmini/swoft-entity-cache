@@ -7,6 +7,8 @@ Swoft 模型实体缓存
 ~~~dotenv
 # 实体缓存超时时间
 ENTITY_CACHE_TTL=3600
+# 模型缓存前缀
+ENTITY_PREFIX=prefix
 ~~~
 
 ## 使用
@@ -14,7 +16,7 @@ config/properties/app.php中增加对应beanScan
 ~~~
 return [
     ...
-    'beanScan' => require __DIR__ . DS . 'beanScan.php',
+    'components' => require __DIR__ . DS . 'beanScan.php',
 ];
 
 # beanScan.php 如下

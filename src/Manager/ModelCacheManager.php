@@ -51,7 +51,8 @@ class ModelCacheManager
         }
 
         $config = bean(ModelCacheConfig::class);
-        return sprintf($config->getCacheKey(), APP_NAME, $instance, $table, $idColumn, $id);
+        $prefix = $config->getPrefix();
+        return sprintf($config->getCacheKey(), $prefix, $instance, $table, $idColumn, $id);
     }
 
     /**

@@ -28,7 +28,7 @@
     },
     "require": {
         "php": ">=7.0",
-        "swoft/framework": "^1.0",
+        "swoft/framework": "^1.0.25",
         "swoft/db": "^1.0",
         "swoft/redis": "^1.0"
     },

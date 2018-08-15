@@ -12,8 +12,6 @@ $beanScan = [
     'SwoftTest\\Db\\Testing' => BASE_PATH . '/Testing',
 ];
 
-$beanScan = array_merge($beanScan, \Swoftx\Db\Entity\Helper\BeanHelper::getEntityCacheBeanScan());
-
 return [
     'version' => '1.0',
     'autoInitBean' => true,
@@ -29,4 +27,9 @@ return [
         ]
     ],
     'db' => require dirname(__FILE__) . DS . 'db.php',
+    'components' => [
+        'custom' => [
+            'Swoftx\\Db\\Entity\\' => BASE_PATH . '/../src/',
+        ],
+    ],
 ];

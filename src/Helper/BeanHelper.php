@@ -32,8 +32,8 @@ class BeanHelper
      */
     public static function getBeanScan()
     {
-        $appDir = alias("@app");
-        $dirs = glob($appDir . "/*");
+        $appDir = alias('@app');
+        $dirs = glob($appDir . '/*');
 
         $beanScan = [];
         foreach ($dirs as $dir) {

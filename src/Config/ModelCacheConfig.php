@@ -13,7 +13,7 @@ use Swoftx\Db\Entity\ModelCacheMode;
 
 /**
  * Class ModelCacheConfig
- * @Bean
+ * @Bean()
  * @package Swoftx\Db\Entity\Config
  */
 class ModelCacheConfig
@@ -23,6 +23,12 @@ class ModelCacheConfig
      * @var string
      */
     protected $cacheKey = 'entity:cache:%s:i:%s:t:%s:%s:%s';
+
+    /**
+     * @Value(env="${ENTITY_PREFIX}")
+     * @var string
+     */
+    protected $prefix = APP_NAME;
 
     /**
      * @Value(env="${ENTITY_CACHE_TTL}")
@@ -82,5 +88,21 @@ class ModelCacheConfig
     public function setUpdateMode(int $updateMode)
     {
         $this->updateMode = $updateMode;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPrefix(): string
+    {
+        return $this->prefix;
+    }
+
+    /**
+     * @param string $prefix
+     */
+    public function setPrefix(string $prefix)
+    {
+        $this->prefix = $prefix;
     }
 }
