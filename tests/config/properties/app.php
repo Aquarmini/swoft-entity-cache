@@ -29,7 +29,7 @@ return [
     'db' => require dirname(__FILE__) . DS . 'db.php',
     'components' => [
         'custom' => [
-            'Swoftx\\Db\\Entity\\' => BASE_PATH . '/../src/',
+            'Swoftx\\Db\\Entity' => BASE_PATH . '/../src',
         ],
     ],
 ];
