@@ -10,20 +10,12 @@ class HashsGetMultiple implements OperatorInterface
         $command = <<<LUA
     local values = {}; 
     for i,v in ipairs(KEYS) do 
-        if(redis.pcall('type',v).ok == 'hash') then
-            values[#values+1] = redis.pcall('hgetall',v);
+        if(redis.call('type',v).ok == 'hash') then
+            values[#values+1] = redis.call('hgetall',v);
         end
-    end 
+    end
     return values;
 LUA;
-
-//         $command = <<<LUA
-//     local result=0;
-//     if redis.pcall('type','xx').ok == 'hash' then
-//         result = 1;
-//     end
-//     return result;
-// LUA;
 
         return $command;
     }
@@ -41,7 +33,7 @@ LUA;
                 $result[] = $temp;
             }
         }
-
+        
         return $result;
     }
 }

@@ -36,6 +36,7 @@ class CacheTest extends AbstractMysqlCase
             $this->assertEquals(\Redis::REDIS_NOT_FOUND, $res);
 
             $command = new HashsGetMultiple();
+
             $res = $redis->eval($command->getScript(), ['ss', 'bb'], 2);
             $res = $command->parseResponse($res);
             $this->assertEquals([], $res);
