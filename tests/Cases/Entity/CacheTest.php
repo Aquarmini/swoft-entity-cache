@@ -13,6 +13,7 @@
 // +----------------------------------------------------------------------
 namespace SwoftTest\Db\Cases\Entity;
 
+use Swoft\Helper\StringHelper;
 use SwoftTest\Db\Cases\AbstractMysqlCase;
 use SwoftTest\Db\Testing\Entity\User;
 use Swoftx\Db\Entity\Config\ModelCacheConfig;
@@ -40,6 +41,18 @@ class CacheTest extends AbstractMysqlCase
         go(function () {
             $this->testFind();
         });
+    }
+
+    public function testFindAll()
+    {
+        $idMethod = 'get' . StringHelper::studly('user_id');
+        $this->assertEquals('getUserId', $idMethod);
+
+        $users = User::findAllByCache([1, 11111, 22222]);
+        $this->assertEquals([1, 11111, 22222], array_keys($users));
+        $this->assertInstanceOf(User::class, $users[1]);
+        $this->assertNull($users[11111]);
+        $this->assertNull($users[22222]);
     }
 
     public function testFindNotExist()

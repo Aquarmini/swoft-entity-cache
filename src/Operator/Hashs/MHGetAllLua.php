@@ -1,0 +1,37 @@
+<?php
+namespace Swoftx\Db\Entity\Operator\Hashs;
+
+use Swoftx\Db\Entity\Operator\OperatorInterface;
+
+class MHGetAllLua implements OperatorInterface
+{
+    public function getScript(): string
+    {
+        $command = <<<LUA
+    local values = {}; 
+    for i,v in ipairs(KEYS) do 
+        values[#values+1] = redis.pcall('hgetall',v); 
+    end 
+    return values;
+LUA;
+
+        return $command;
+    }
+
+    public function parseResponse($data)
+    {
+        $result = [];
+        foreach ($data as $item) {
+            if (!empty($item)) {
+                $temp = [];
+                for ($i = 0; $i < count($item); ++$i) {
+                    $temp[$item[$i]] = $item[++$i];
+                }
+
+                $result[] = $temp;
+            }
+        }
+
+        return $result;
+    }
+}

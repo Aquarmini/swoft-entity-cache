@@ -24,6 +24,11 @@ trait ModelCacheable
         return ModelCacheManager::findOne($id, get_called_class());
     }
 
+    public static function findAllByCache($ids)
+    {
+        return ModelCacheManager::findAll($ids, get_called_class());
+    }
+
     public function update(): ResultInterface
     {
         $idColumn = ModelCacheManager::getPrimaryKey(get_called_class());
