@@ -2,6 +2,7 @@
 namespace Swoftx\Db\Entity\Memory;
 
 use Swoft\Bean\Annotation\Bean;
+use Swoft\Contract\Arrayable;
 use Swoft\Redis\Redis;
 use Swoftx\Db\Entity\Exceptions\EntityCacheException;
 use Swoftx\Db\Entity\Operator\OperatorInterface;
@@ -10,7 +11,7 @@ use Swoftx\Db\Entity\Operator\OperatorInterface;
  * Class LuaSha
  * @Bean
  */
-class LuaSha
+class LuaSha implements Arrayable
 {
     public $luaSha = [];
 
@@ -30,5 +31,10 @@ class LuaSha
         $sha = $redis->script('load', $object->getScript());
 
         return $this->luaSha[$OperatorName] = $sha;
+    }
+
+    public function toArray(): array
+    {
+        return $this->luaSha;
     }
 }
