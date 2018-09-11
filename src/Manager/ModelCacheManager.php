@@ -15,6 +15,7 @@ use Swoftx\Db\Entity\Config\ModelCacheConfig;
 use Swoftx\Db\Entity\Helper\EntityHelper;
 use Swoft\Db\Model;
 use Swoft\Redis\Redis;
+use Swoftx\Db\Entity\Memory\LuaSha;
 use Swoftx\Db\Entity\Operator\Hashs\HashsGetMultiple;
 
 class ModelCacheManager
@@ -106,11 +107,13 @@ class ModelCacheManager
         $idColumn = static::getPrimaryKey($className);
         $idMethod = 'get' . StringHelper::studly($idColumn);
 
-        $command = new HashsGetMultiple();
-        $script = $command->getScript();
+        // 获取lua脚本对用的sha
+        $luaSha = bean(LuaSha::class);
+        $sha = $luaSha->get(HashsGetMultiple::class);
 
         // 批量获取缓存
-        $list = $redis->eval($script, $keys, count($keys));
+        $list = $redis->evalSha($sha, $keys, count($keys));
+        $command = new HashsGetMultiple();
         $list = $command->parseResponse($list);
 
         // 将缓存组装成实体

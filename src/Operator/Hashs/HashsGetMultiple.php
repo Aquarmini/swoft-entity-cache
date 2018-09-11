@@ -33,7 +33,7 @@ LUA;
                 $result[] = $temp;
             }
         }
-        
+
         return $result;
     }
 }
