@@ -3,17 +3,27 @@ namespace Swoftx\Db\Entity\Operator\Hashs;
 
 use Swoftx\Db\Entity\Operator\OperatorInterface;
 
-class MHGetAllLua implements OperatorInterface
+class HashsGetMultiple implements OperatorInterface
 {
     public function getScript(): string
     {
         $command = <<<LUA
     local values = {}; 
     for i,v in ipairs(KEYS) do 
-        values[#values+1] = redis.pcall('hgetall',v); 
+        if(redis.pcall('type',v).ok == 'hash') then
+            values[#values+1] = redis.pcall('hgetall',v);
+        end
     end 
     return values;
 LUA;
+
+//         $command = <<<LUA
+//     local result=0;
+//     if redis.pcall('type','xx').ok == 'hash' then
+//         result = 1;
+//     end
+//     return result;
+// LUA;
 
         return $command;
     }

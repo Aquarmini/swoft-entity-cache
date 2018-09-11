@@ -14,15 +14,37 @@
 namespace SwoftTest\Db\Cases\Entity;
 
 use Swoft\Helper\StringHelper;
+use Swoft\Redis\Redis;
 use SwoftTest\Db\Cases\AbstractMysqlCase;
 use SwoftTest\Db\Testing\Entity\User;
 use Swoftx\Db\Entity\Config\ModelCacheConfig;
+use Swoftx\Db\Entity\Manager\ModelCacheManager;
+use Swoftx\Db\Entity\Operator\Hashs\HashsGetMultiple;
 
 class CacheTest extends AbstractMysqlCase
 {
     public function testExample()
     {
         $this->assertTrue(true);
+
+        $redis = bean(Redis::class);
+        $res = $redis->type('sss');
+        $this->assertEquals(\Redis::REDIS_NOT_FOUND, $res);
+
+        go(function () use ($redis) {
+            $res = $redis->type('sss');
+            $this->assertEquals(\Redis::REDIS_NOT_FOUND, $res);
+
+            $command = new HashsGetMultiple();
+            $res = $redis->eval($command->getScript(), ['ss', 'bb'], 2);
+            $res = $command->parseResponse($res);
+            $this->assertEquals([], $res);
+
+            $redis->hSet('xx', 'k', 'v');
+            $res = $redis->eval($command->getScript(), ['ss', 'xx', 'bb'], 3);
+            $res = $command->parseResponse($res);
+            $this->assertEquals([['k' => 'v']], $res);
+        });
     }
 
     public function testFind()
@@ -49,10 +71,18 @@ class CacheTest extends AbstractMysqlCase
         $this->assertEquals('getUserId', $idMethod);
 
         $users = User::findAllByCache([1, 11111, 22222]);
+
         $this->assertEquals([1, 11111, 22222], array_keys($users));
         $this->assertInstanceOf(User::class, $users[1]);
         $this->assertNull($users[11111]);
         $this->assertNull($users[22222]);
+    }
+
+    public function testFindAllByCo()
+    {
+        go(function () {
+            $this->testFindAll();
+        });
     }
 
     public function testFindNotExist()

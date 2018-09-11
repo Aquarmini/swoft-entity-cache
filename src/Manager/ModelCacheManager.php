@@ -15,7 +15,7 @@ use Swoftx\Db\Entity\Config\ModelCacheConfig;
 use Swoftx\Db\Entity\Helper\EntityHelper;
 use Swoft\Db\Model;
 use Swoft\Redis\Redis;
-use Swoftx\Db\Entity\Operator\Hashs\MHGetAllLua;
+use Swoftx\Db\Entity\Operator\Hashs\HashsGetMultiple;
 
 class ModelCacheManager
 {
@@ -106,7 +106,7 @@ class ModelCacheManager
         $idColumn = static::getPrimaryKey($className);
         $idMethod = 'get' . StringHelper::studly($idColumn);
 
-        $command = new MHGetAllLua();
+        $command = new HashsGetMultiple();
         $script = $command->getScript();
 
         // 批量获取缓存
