@@ -20,6 +20,9 @@ use Swoftx\Db\Entity\Operator\Hashs\HashsGetMultiple;
 
 class ModelCacheManager
 {
+    const ENTITY_NOT_FIND_KEY = 'entity:empty';
+    const ENTITY_NOT_FIND_VALUE = '1';
+
     public static function getPrimaryKey($className)
     {
         $collect = EntityCollector::getCollector();
@@ -70,14 +73,15 @@ class ModelCacheManager
         $redis = bean(Redis::class);
         $config = bean(ModelCacheConfig::class);
 
-        if ($redis->exists($key)) {
-            if ($redis->type($key) === \Redis::REDIS_HASH) {
-                $data = $redis->hGetAll($key);
+        $type = $redis->type($key);
+        if ($type === \Redis::REDIS_HASH) {
+            $data = $redis->hGetAll($key);
+            if (static::check($data)) {
                 $entity = EntityHelper::arrayToEntity($data, $className);
                 return $entity;
-            } else {
-                return null;
             }
+        } elseif ($type !== \Redis::REDIS_NOT_FOUND) {
+            return null;
         }
 
         /** @var Model $object */
@@ -119,8 +123,10 @@ class ModelCacheManager
         // 将缓存组装成实体
         $result = [];
         foreach ($list as $item) {
-            $entity = EntityHelper::arrayToEntity($item, $className);
-            $result[$entity->$idMethod()] = $entity;
+            if (static::check($item)) {
+                $entity = EntityHelper::arrayToEntity($item, $className);
+                $result[$entity->$idMethod()] = $entity;
+            }
         }
 
         // 验证缺少哪些实体
@@ -161,9 +167,22 @@ class ModelCacheManager
         if ($object instanceof $className) {
             $attrs = $object->toArray();
             $redis->hMset($key, $attrs);
-            $redis->expire($key, $config->getTtl());
         } elseif (is_null($object)) {
-            $redis->set($key, null, $config->getTtl());
+            $redis->hSet($key, self::ENTITY_NOT_FIND_KEY, self::ENTITY_NOT_FIND_VALUE);
         }
+        $redis->expire($key, $config->getTtl());
+    }
+
+    /**
+     * 检测缓存是否合法
+     * @author limx
+     * @param $data
+     */
+    public static function check($data)
+    {
+        if (isset($data[self::ENTITY_NOT_FIND_KEY])) {
+            return false;
+        }
+        return true;
     }
 }
