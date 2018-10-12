@@ -152,4 +152,22 @@ class CacheTest extends AbstractMysqlCase
             $this->testUpdateAndDelete();
         });
     }
+
+    public function testFindNotThenInsert()
+    {
+        $id = rand(1000000, 9999999);
+        $user = User::findOneByCache($id);
+        $this->assertNull($user);
+
+        $user = new User();
+        $user->setId($id);
+        $user->setName($id);
+        $user->setRoleId(1);
+        $user->setUpdatedAt(date('Y-m-d H:i:s'));
+        $user->setCreatedAt(date('Y-m-d H:i:s'));
+        $user->save()->getResult();
+
+        $user = User::findOneByCache($id);
+        $this->assertNotEmpty($user);
+    }
 }

@@ -80,6 +80,7 @@ class ModelCacheManager
                 $entity = EntityHelper::arrayToEntity($data, $className);
                 return $entity;
             }
+            return null;
         } elseif ($type !== \Redis::REDIS_NOT_FOUND) {
             return null;
         }

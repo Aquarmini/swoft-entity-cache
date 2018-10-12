@@ -36,7 +36,18 @@ trait ModelCacheable
 
         $res = parent::update();
         // 重置缓存
-        ModelCacheManager::setCache($this->$getterMethod(), get_called_class(), $this);
+        ModelCacheManager::deleteOne($this->$getterMethod(), get_called_class(), $this);
+        return $res;
+    }
+
+    public function save(): ResultInterface
+    {
+        $idColumn = ModelCacheManager::getPrimaryKey(get_called_class());
+        $getterMethod = StringHelper::camel('get_' . $idColumn);
+
+        $res = parent::save();
+        // 重置缓存
+        ModelCacheManager::deleteOne($this->$getterMethod(), get_called_class());
         return $res;
     }
 
