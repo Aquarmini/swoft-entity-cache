@@ -23,7 +23,7 @@ LUA;
     public function parseResponse($data)
     {
         $result = [];
-        foreach ($data as $item) {
+        foreach ($data ?? [] as $item) {
             if (!empty($item)) {
                 $temp = [];
                 for ($i = 0; $i < count($item); ++$i) {
