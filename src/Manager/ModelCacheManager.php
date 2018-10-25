@@ -115,15 +115,16 @@ class ModelCacheManager
         // 获取lua脚本对用的sha
         $luaSha = bean(LuaSha::class);
         $sha = $luaSha->get(HashsGetMultiple::class);
+        $command = new HashsGetMultiple();
 
         // 批量获取缓存
         if (!empty($sha)) {
             $list = $redis->evalSha($sha, $keys, count($keys));
         } else {
-            $list = $redis->eval($sha, $keys, count($keys));
+            $script = $command->getScript();
+            $list = $redis->eval($script, $keys, count($keys));
         }
 
-        $command = new HashsGetMultiple();
         $list = $command->parseResponse($list);
 
         // 将缓存组装成实体
