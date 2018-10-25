@@ -117,7 +117,12 @@ class ModelCacheManager
         $sha = $luaSha->get(HashsGetMultiple::class);
 
         // 批量获取缓存
-        $list = $redis->evalSha($sha, $keys, count($keys));
+        if (!empty($sha)) {
+            $list = $redis->evalSha($sha, $keys, count($keys));
+        } else {
+            $list = $redis->eval($sha, $keys, count($keys));
+        }
+
         $command = new HashsGetMultiple();
         $list = $command->parseResponse($list);
 
