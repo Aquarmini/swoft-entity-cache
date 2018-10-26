@@ -122,7 +122,7 @@ class ModelCacheManager
         $command = new HashsGetMultiple();
 
         // 批量获取缓存
-        if (!empty($sha)) {
+        if (!empty($sha) && $config->isLoadScript()) {
             $list = $redis->evalSha($sha, $keys, count($keys));
         } else {
             $script = $command->getScript();

@@ -44,6 +44,12 @@ class ModelCacheConfig
     protected $updateMode = ModelCacheMode::DELETE_CACHE_BEFORE_UPDATE;
 
     /**
+     * @Value(env="${ENTITY_CACHE_LOAD_SCRIPT}")
+     * @var bool
+     */
+    protected $loadScript = true;
+
+    /**
      * @return string
      */
     public function getCacheKey(): string
@@ -105,5 +111,21 @@ class ModelCacheConfig
     public function setPrefix(string $prefix)
     {
         $this->prefix = $prefix;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isLoadScript(): bool
+    {
+        return $this->loadScript;
+    }
+
+    /**
+     * @param bool $loadScript
+     */
+    public function setLoadScript(bool $loadScript)
+    {
+        $this->loadScript = $loadScript;
     }
 }
