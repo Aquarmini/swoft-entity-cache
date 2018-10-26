@@ -170,4 +170,18 @@ class CacheTest extends AbstractMysqlCase
         $user = User::findOneByCache($id);
         $this->assertNotEmpty($user);
     }
+
+    public function testFindAllByEmpty()
+    {
+        $users = User::findAllByCache([]);
+
+        $this->assertEquals([], $users);
+    }
+
+    public function testFindAllByEmptyByCo()
+    {
+        go(function () {
+            $this->testFindAllByEmpty();
+        });
+    }
 }

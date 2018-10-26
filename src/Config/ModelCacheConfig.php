@@ -19,6 +19,7 @@ use Swoftx\Db\Entity\ModelCacheMode;
 class ModelCacheConfig
 {
     /**
+     * Redis集群模式下，可以修改CacheKey规则，例如{entity:cache:%s:i:%s:t:%s}:%s:%s
      * @Value(env="${ENTITY_CACHE_KEY}")
      * @var string
      */

@@ -102,6 +102,10 @@ class ModelCacheManager
      */
     public static function findAll($ids, $className)
     {
+        if (empty($ids)) {
+            return [];
+        }
+
         $keys = [];
         foreach ($ids as $id) {
             $keys[] = static::getCacheKey($id, $className);
@@ -125,6 +129,7 @@ class ModelCacheManager
             $list = $redis->eval($script, $keys, count($keys));
         }
 
+        $list = is_array($list) ? $list : [];
         $list = $command->parseResponse($list);
 
         // 将缓存组装成实体
