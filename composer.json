@@ -39,7 +39,7 @@
     "extra": {
         "config-plugin": {
             "swoft.components.custom": [
-                "config/components.phpc"
+                "config/components.php"
             ]
         }
     }
