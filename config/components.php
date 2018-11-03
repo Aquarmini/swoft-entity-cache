@@ -1,4 +1,6 @@
 <?php
 return [
-    'Swoftx\\Db\\Entity\\'
+    'custom' => [
+        'Swoftx\\Db\\Entity\\'
+    ],
 ];
