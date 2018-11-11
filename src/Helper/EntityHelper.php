@@ -35,7 +35,7 @@ class EntityHelper
             $setterMethod = StringHelper::camel('set_' . $field);
 
             $type = $entity['field'][$field]['type'];
-            $value = ArrayHelper::get($data[$field], $entity['field'][$field]['default']);
+            $value = ArrayHelper::get($data, $field, $entity['field'][$field]['default']);
             $value = SwoftEntityHelper::trasferTypes($type, $value);
 
             if (\method_exists($object, $setterMethod)) {
