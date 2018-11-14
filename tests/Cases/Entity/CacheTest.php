@@ -184,4 +184,41 @@ class CacheTest extends AbstractMysqlCase
             $this->testFindAllByEmpty();
         });
     }
+
+    public function testFindAllByNull()
+    {
+        $users = User::findAllByCache([null]);
+
+        $this->assertEquals(['' => null], $users);
+    }
+
+    public function testFindAllByNullByCo()
+    {
+        go(function () {
+            $this->testFindAllByNull();
+        });
+    }
+
+    public function testFindByNotHash()
+    {
+        $redis = bean(Redis::class);
+        $redis->set("entity:cache:prefix:i:default:t:user:id:1", 'asdfg');
+
+        $user = User::findOneByCache(1);
+        $this->assertEquals(1, $user->getId());
+        $this->assertEquals('limx', $user->getName());
+
+        $user = User::findOneByCache(1);
+        $this->assertEquals(1, $user->getId());
+        $this->assertEquals('limx', $user->getName());
+    }
+
+    public function testFindByNotHashByCo()
+    {
+        go(function () {
+            $this->testFindByNotHash();
+        });
+    }
+
+
 }

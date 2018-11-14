@@ -73,16 +73,11 @@ class ModelCacheManager
         $redis = bean(Redis::class);
         $config = bean(ModelCacheConfig::class);
 
-        $type = $redis->type($key);
-        if ($type === \Redis::REDIS_HASH) {
-            $data = $redis->hGetAll($key);
-            if (static::check($data)) {
-                $entity = EntityHelper::arrayToEntity($data, $className);
-                return $entity;
-            }
-            return null;
-        } elseif ($type !== \Redis::REDIS_NOT_FOUND) {
-            return null;
+        // Key不存在时，返回[], Key类型不是hash时返回false
+        $data = $redis->hGetAll($key);
+        if (static::check($data)) {
+            $entity = EntityHelper::arrayToEntity($data, $className);
+            return $entity;
         }
 
         /** @var Model $object */
@@ -176,6 +171,7 @@ class ModelCacheManager
         $redis = bean(Redis::class);
         $config = bean(ModelCacheConfig::class);
 
+        $redis->delete($key);
         if ($object instanceof $className) {
             $attrs = $object->toArray();
             $redis->hMset($key, $attrs);
@@ -192,7 +188,7 @@ class ModelCacheManager
      */
     public static function check($data)
     {
-        if (isset($data[self::ENTITY_NOT_FIND_KEY])) {
+        if (empty($data) || isset($data[self::ENTITY_NOT_FIND_KEY])) {
             return false;
         }
         return true;
