@@ -2,7 +2,7 @@
 /**
  * Swoft Entity Cache
  *
- * @author   limx <715557344@qq.com>
+ * @author   limx <limingxin@swoft.org>
  * @link     https://github.com/limingxinleo/swoft-entity-cache
  */
 namespace Swoftx\Db\Entity\Manager;
@@ -21,6 +21,7 @@ use Swoftx\Db\Entity\Operator\Hashs\HashsGetMultiple;
 class ModelCacheManager
 {
     const ENTITY_NOT_FIND_KEY = 'entity:empty';
+
     const ENTITY_NOT_FIND_VALUE = '1';
 
     public static function getPrimaryKey($className)
