@@ -41,5 +41,5 @@ install:
 
 script:
   - cd $TRAVIS_BUILD_DIR
-  - ./vendor/bin/phstan analiyse src
+  - ./vendor/bin/phpstan analiyse src
   - ./vendor/bin/phpunit
