@@ -36,7 +36,7 @@ trait ModelCacheable
 
         $res = parent::update();
         // 重置缓存
-        ModelCacheManager::deleteOne($this->$getterMethod(), get_called_class(), $this);
+        ModelCacheManager::deleteOne($this->$getterMethod(), get_called_class());
         return $res;
     }
 
