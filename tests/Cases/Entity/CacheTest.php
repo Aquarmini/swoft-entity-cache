@@ -206,17 +206,18 @@ class CacheTest extends AbstractMysqlCase
     public function testFindByNotHash()
     {
         $redis = bean(Redis::class);
-        $redis->set('entity:cache:prefix:i:default:t:user:id:1', 'asdfg');
+        $redis->set('entity:cache:prefix:i:default:t:user:id:2', 'asdfg');
+        $this->assertEquals(\Redis::REDIS_STRING, $redis->type('entity:cache:prefix:i:default:t:user:id:2'));
 
-        $user = User::findOneByCache(1);
-        $this->assertEquals(1, $user->getId());
-        $this->assertEquals('limx', $user->getName());
+        $user = User::findOneByCache(2);
+        $this->assertEquals(2, $user->getId());
+        $this->assertEquals('Agnes', $user->getName());
 
-        $user = User::findOneByCache(1);
-        $this->assertEquals(1, $user->getId());
-        $this->assertEquals('limx', $user->getName());
+        $user = User::findOneByCache(2);
+        $this->assertEquals(2, $user->getId());
+        $this->assertEquals('Agnes', $user->getName());
 
-        $this->assertEquals(\Redis::REDIS_HASH, $redis->type('entity:cache:prefix:i:default:t:user:id:1'));
+        $this->assertEquals(\Redis::REDIS_HASH, $redis->type('entity:cache:prefix:i:default:t:user:id:2'));
     }
 
     public function testFindByNotHashByCo()
