@@ -201,7 +201,7 @@ class CacheTest extends AbstractMysqlCase
     public function testFindByNotHash()
     {
         $redis = bean(Redis::class);
-        $redis->set("entity:cache:prefix:i:default:t:user:id:1", 'asdfg');
+        $redis->set('entity:cache:prefix:i:default:t:user:id:1', 'asdfg');
 
         $user = User::findOneByCache(1);
         $this->assertEquals(1, $user->getId());
@@ -218,6 +218,4 @@ class CacheTest extends AbstractMysqlCase
             $this->testFindByNotHash();
         });
     }
-
-
 }

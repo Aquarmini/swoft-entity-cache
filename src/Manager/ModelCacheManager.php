@@ -171,7 +171,7 @@ class ModelCacheManager
         $key = static::getCacheKey($id, $className);
         $redis = bean(Redis::class);
         $config = bean(ModelCacheConfig::class);
-        
+
         if ($object instanceof $className) {
             $attrs = $object->toArray();
             $redis->hMset($key, $attrs);
