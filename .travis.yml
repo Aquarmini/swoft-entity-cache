@@ -29,7 +29,7 @@ install:
   - cd $TRAVIS_BUILD_DIR
   # 更新扩展
   - wget https://github.com/redis/hiredis/archive/v0.13.3.tar.gz -O hiredis.tar.gz && mkdir -p hiredis && tar -xf hiredis.tar.gz -C hiredis --strip-components=1 && cd hiredis && sudo make -j$(nproc) && sudo make install && sudo ldconfig && cd ..
-  - wget https://github.com/swoole/swoole-src/archive/v4.0.3.tar.gz -O swoole.tar.gz && mkdir -p swoole && tar -xf swoole.tar.gz -C swoole --strip-components=1 && rm swoole.tar.gz && cd swoole && phpize && ./configure --enable-async-redis && make -j$(nproc) && make install && cd -
+  - bash tests/_ci/swoole.install.sh
   - phpenv config-rm xdebug.ini
   - phpenv config-add tests/_ci/ci.ini
   - bash tests/_ci/setup_dbs.sh
