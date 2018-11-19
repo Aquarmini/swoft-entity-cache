@@ -76,6 +76,11 @@ class CacheTest extends AbstractMysqlCase
         $this->assertInstanceOf(User::class, $users[1]);
         $this->assertNull($users[11111]);
         $this->assertNull($users[22222]);
+
+        $redis = bean(Redis::class);
+        $this->assertEquals(\Redis::REDIS_HASH, $redis->type('entity:cache:prefix:i:default:t:user:id:1'));
+        $this->assertEquals(\Redis::REDIS_HASH, $redis->type('entity:cache:prefix:i:default:t:user:id:11111'));
+        $this->assertEquals(\Redis::REDIS_HASH, $redis->type('entity:cache:prefix:i:default:t:user:id:22222'));
     }
 
     public function testFindAllByCo()
@@ -210,6 +215,8 @@ class CacheTest extends AbstractMysqlCase
         $user = User::findOneByCache(1);
         $this->assertEquals(1, $user->getId());
         $this->assertEquals('limx', $user->getName());
+
+        $this->assertEquals(\Redis::REDIS_HASH, $redis->type('entity:cache:prefix:i:default:t:user:id:1'));
     }
 
     public function testFindByNotHashByCo()
