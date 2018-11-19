@@ -193,9 +193,16 @@ class ModelCacheManager
      */
     public static function check($data)
     {
-        if (isset($data[self::ENTITY_NOT_FIND_KEY])) {
+        if (!is_array($data)) {
             return false;
         }
+
+        unset($data[self::ENTITY_NOT_FIND_KEY]);
+
+        if (empty($data)) {
+            return false;
+        }
+
         return true;
     }
 }
