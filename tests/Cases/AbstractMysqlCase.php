@@ -2,7 +2,7 @@
 /**
  * Swoft Entity Cache
  *
- * @author   limx <715557344@qq.com>
+ * @author   limx <limingxin@swoft.org>
  * @link     https://github.com/limingxinleo/swoft-entity-cache
  */
 

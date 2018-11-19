@@ -2,7 +2,7 @@
 /**
  * Swoft Entity Cache
  *
- * @author   limx <715557344@qq.com>
+ * @author   limx <limingxin@swoft.org>
  * @link     https://github.com/limingxinleo/swoft-entity-cache
  */
 namespace Swoftx\Db\Entity;
@@ -36,7 +36,7 @@ trait ModelCacheable
 
         $res = parent::update();
         // 重置缓存
-        ModelCacheManager::deleteOne($this->$getterMethod(), get_called_class(), $this);
+        ModelCacheManager::deleteOne($this->$getterMethod(), get_called_class());
         return $res;
     }
 

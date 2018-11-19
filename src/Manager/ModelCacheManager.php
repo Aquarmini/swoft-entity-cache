@@ -2,7 +2,7 @@
 /**
  * Swoft Entity Cache
  *
- * @author   limx <715557344@qq.com>
+ * @author   limx <limingxin@swoft.org>
  * @link     https://github.com/limingxinleo/swoft-entity-cache
  */
 namespace Swoftx\Db\Entity\Manager;
@@ -21,6 +21,7 @@ use Swoftx\Db\Entity\Operator\Hashs\HashsGetMultiple;
 class ModelCacheManager
 {
     const ENTITY_NOT_FIND_KEY = 'entity:empty';
+
     const ENTITY_NOT_FIND_VALUE = '1';
 
     public static function getPrimaryKey($className)
@@ -75,9 +76,9 @@ class ModelCacheManager
 
         // Key不存在时，返回[], Key类型不是hash时返回false
         $data = $redis->hGetAll($key);
-        if (static::check($data)) {
-            $entity = EntityHelper::arrayToEntity($data, $className);
-            return $entity;
+
+        if ($data && is_array($data)) {
+            return static::arrayToEntity($data, $className);
         }
 
         /** @var Model $object */
@@ -130,7 +131,7 @@ class ModelCacheManager
         // 将缓存组装成实体
         $result = [];
         foreach ($list as $item) {
-            if (static::check($item)) {
+            if (static::isEntityExist($item)) {
                 $entity = EntityHelper::arrayToEntity($item, $className);
                 $result[$entity->$idMethod()] = $entity;
             }
@@ -170,8 +171,7 @@ class ModelCacheManager
         $key = static::getCacheKey($id, $className);
         $redis = bean(Redis::class);
         $config = bean(ModelCacheConfig::class);
-
-        $redis->delete($key);
+        
         if ($object instanceof $className) {
             $attrs = $object->toArray();
             $redis->hMset($key, $attrs);
@@ -182,15 +182,30 @@ class ModelCacheManager
     }
 
     /**
-     * 检测缓存是否合法
+     * 判断模型是否存在
      * @author limx
      * @param $data
      */
-    public static function check($data)
+    public static function isEntityExist(array $data)
     {
-        if (empty($data) || isset($data[self::ENTITY_NOT_FIND_KEY])) {
-            return false;
+        unset($data[self::ENTITY_NOT_FIND_KEY]);
+
+        return !empty($data);
+    }
+
+    /**
+     * 将array转化为模型
+     * @author limx
+     * @param array $data
+     * @return null|object
+     */
+    protected static function arrayToEntity(array $data, $className)
+    {
+        if (static::isEntityExist($data)) {
+            $entity = EntityHelper::arrayToEntity($data, $className);
+            return $entity;
+        } else {
+            return null;
         }
-        return true;
     }
 }

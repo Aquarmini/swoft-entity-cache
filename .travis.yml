@@ -4,7 +4,6 @@ dist: trusty
 sudo: false
 
 php:
-  - 7.0
   - 7.1
   - 7.2
   - nightly
@@ -42,4 +41,5 @@ install:
 
 script:
   - cd $TRAVIS_BUILD_DIR
+  - ./vendor/bin/phpstan analyse src
   - ./vendor/bin/phpunit

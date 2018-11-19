@@ -2,7 +2,7 @@
 /**
  * Swoft Entity Cache
  *
- * @author   limx <715557344@qq.com>
+ * @author   limx <limingxin@swoft.org>
  * @link     https://github.com/limingxinleo/swoft-entity-cache
  */
 // | EventTest.php [ WE CAN DO IT JUST THINK IT ]
@@ -18,7 +18,6 @@ use Swoft\Redis\Redis;
 use SwoftTest\Db\Cases\AbstractMysqlCase;
 use SwoftTest\Db\Testing\Entity\User;
 use Swoftx\Db\Entity\Config\ModelCacheConfig;
-use Swoftx\Db\Entity\Manager\ModelCacheManager;
 use Swoftx\Db\Entity\Operator\Hashs\HashsGetMultiple;
 
 class CacheTest extends AbstractMysqlCase

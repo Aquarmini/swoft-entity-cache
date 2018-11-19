@@ -1,4 +1,10 @@
 <?php
+/**
+ * Swoft Entity Cache
+ *
+ * @author   limx <limingxin@swoft.org>
+ * @link     https://github.com/limingxinleo/swoft-entity-cache
+ */
 namespace Swoftx\Db\Entity\Operator\Hashs;
 
 use Swoftx\Db\Entity\Operator\OperatorInterface;
@@ -24,9 +30,10 @@ LUA;
     {
         $result = [];
         foreach ($data ?? [] as $item) {
-            if (!empty($item)) {
+            if (!empty($item) && is_array($item)) {
                 $temp = [];
-                for ($i = 0; $i < count($item); ++$i) {
+                $count = count($item);
+                for ($i = 0; $i < $count; ++$i) {
                     $temp[$item[$i]] = $item[++$i];
                 }
 
