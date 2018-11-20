@@ -11,5 +11,7 @@ use Swoft\Db\Model;
 
 class ModelCache extends Model
 {
-    use ModelCacheable;
+    use QueryCacheable;
+    use UpdateCacheable;
+    use UpdateWithResultCacheable;
 }

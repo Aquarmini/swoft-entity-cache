@@ -8,7 +8,6 @@
 namespace Swoftx\Db\Entity;
 
 use Swoft\Core\ResultInterface;
-use Swoft\Helper\StringHelper;
 use Swoftx\Db\Entity\Manager\ModelCacheManager;
 
 trait ModelCacheable

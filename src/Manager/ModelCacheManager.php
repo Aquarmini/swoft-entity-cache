@@ -94,7 +94,6 @@ class ModelCacheManager
      * @author limx
      * @param $ids       实体主键ID列表
      * @param $className 类名
-     * @return self
      */
     public static function findAll($ids, $className)
     {
