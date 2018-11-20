@@ -30,9 +30,10 @@ LUA;
     {
         $result = [];
         foreach ($data ?? [] as $item) {
-            if (!empty($item)) {
+            if (!empty($item) && is_array($item)) {
                 $temp = [];
-                for ($i = 0; $i < count($item); ++$i) {
+                $count = count($item);
+                for ($i = 0; $i < $count; ++$i) {
                     $temp[$item[$i]] = $item[++$i];
                 }
 

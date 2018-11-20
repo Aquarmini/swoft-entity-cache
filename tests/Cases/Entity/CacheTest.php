@@ -76,6 +76,11 @@ class CacheTest extends AbstractMysqlCase
         $this->assertInstanceOf(User::class, $users[1]);
         $this->assertNull($users[11111]);
         $this->assertNull($users[22222]);
+
+        $redis = bean(Redis::class);
+        $this->assertEquals(\Redis::REDIS_HASH, $redis->type('entity:cache:prefix:i:default:t:user:id:1'));
+        $this->assertEquals(\Redis::REDIS_HASH, $redis->type('entity:cache:prefix:i:default:t:user:id:11111'));
+        $this->assertEquals(\Redis::REDIS_HASH, $redis->type('entity:cache:prefix:i:default:t:user:id:22222'));
     }
 
     public function testFindAllByCo()
@@ -182,5 +187,67 @@ class CacheTest extends AbstractMysqlCase
         go(function () {
             $this->testFindAllByEmpty();
         });
+    }
+
+    public function testFindAllByNull()
+    {
+        $users = User::findAllByCache([null]);
+
+        $this->assertEquals(['' => null], $users);
+    }
+
+    public function testFindAllByNullByCo()
+    {
+        go(function () {
+            $this->testFindAllByNull();
+        });
+    }
+
+    public function testFindByNotHash()
+    {
+        $redis = bean(Redis::class);
+        $redis->set('entity:cache:prefix:i:default:t:user:id:2', 'asdfg');
+        $this->assertEquals(\Redis::REDIS_STRING, $redis->type('entity:cache:prefix:i:default:t:user:id:2'));
+
+        $user = User::findOneByCache(2);
+        $this->assertEquals(2, $user->getId());
+        $this->assertEquals('Agnes', $user->getName());
+
+        $user = User::findOneByCache(2);
+        $this->assertEquals(2, $user->getId());
+        $this->assertEquals('Agnes', $user->getName());
+
+        $this->assertEquals(\Redis::REDIS_HASH, $redis->type('entity:cache:prefix:i:default:t:user:id:2'));
+    }
+
+    public function testFindByNotHashByCo()
+    {
+        go(function () {
+            $this->testFindByNotHash();
+        });
+    }
+
+    public function testCreateDelCache()
+    {
+        $user = new User();
+        $user->setName(uniqid());
+        $user->setRoleId(1);
+        $user->setUpdatedAt(date('Y-m-d H:i:s'));
+        $user->setCreatedAt(date('Y-m-d H:i:s'));
+        $id = $user->save()->getResult();
+
+        $nextId = $id + 1;
+        $user = User::findOneByCache($nextId);
+        $this->assertEquals(null, $user);
+
+        $user = new User();
+        $user->setName(uniqid());
+        $user->setRoleId(1);
+        $user->setUpdatedAt(date('Y-m-d H:i:s'));
+        $user->setCreatedAt(date('Y-m-d H:i:s'));
+        $id = $user->saveModel();
+
+        $user = User::findOneByCache($id);
+        $this->assertNotEquals(null, $user);
     }
 }

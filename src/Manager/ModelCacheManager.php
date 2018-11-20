@@ -74,16 +74,11 @@ class ModelCacheManager
         $redis = bean(Redis::class);
         $config = bean(ModelCacheConfig::class);
 
-        $type = $redis->type($key);
-        if ($type === \Redis::REDIS_HASH) {
-            $data = $redis->hGetAll($key);
-            if (static::check($data)) {
-                $entity = EntityHelper::arrayToEntity($data, $className);
-                return $entity;
-            }
-            return null;
-        } elseif ($type !== \Redis::REDIS_NOT_FOUND) {
-            return null;
+        // Key不存在时，返回[], Key类型不是hash时返回false
+        $data = $redis->hGetAll($key);
+
+        if ($data && is_array($data)) {
+            return static::arrayToEntity($data, $className);
         }
 
         /** @var Model $object */
@@ -136,7 +131,7 @@ class ModelCacheManager
         // 将缓存组装成实体
         $result = [];
         foreach ($list as $item) {
-            if (static::check($item)) {
+            if (static::isEntityExist($item)) {
                 $entity = EntityHelper::arrayToEntity($item, $className);
                 $result[$entity->$idMethod()] = $entity;
             }
@@ -166,6 +161,21 @@ class ModelCacheManager
     }
 
     /**
+     * 删除缓存
+     * @author limx
+     * @param Model $model
+     */
+    public static function delete(Model $model)
+    {
+        $className = get_class($model);
+        $idColumn = static::getPrimaryKey($className);
+        $getterMethod = StringHelper::camel('get_' . $idColumn);
+
+        $id = $model->$getterMethod();
+        return static::deleteOne($id, $className);
+    }
+
+    /**
      * 设置缓存
      * @author limx
      * @param $id
@@ -177,6 +187,7 @@ class ModelCacheManager
         $redis = bean(Redis::class);
         $config = bean(ModelCacheConfig::class);
 
+        $redis->delete($key);
         if ($object instanceof $className) {
             $attrs = $object->toArray();
             $redis->hMset($key, $attrs);
@@ -187,22 +198,30 @@ class ModelCacheManager
     }
 
     /**
-     * 检测缓存是否合法
+     * 判断模型是否存在
      * @author limx
      * @param $data
      */
-    public static function check($data)
+    public static function isEntityExist(array $data)
     {
-        if (!is_array($data)) {
-            return false;
-        }
-
         unset($data[self::ENTITY_NOT_FIND_KEY]);
 
-        if (empty($data)) {
-            return false;
-        }
+        return !empty($data);
+    }
 
-        return true;
+    /**
+     * 将array转化为模型
+     * @author limx
+     * @param array $data
+     * @return null|object
+     */
+    protected static function arrayToEntity(array $data, $className)
+    {
+        if (static::isEntityExist($data)) {
+            $entity = EntityHelper::arrayToEntity($data, $className);
+            return $entity;
+        } else {
+            return null;
+        }
     }
 }
