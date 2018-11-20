@@ -31,33 +31,49 @@ trait ModelCacheable
 
     public function update(): ResultInterface
     {
-        $idColumn = ModelCacheManager::getPrimaryKey(get_called_class());
-        $getterMethod = StringHelper::camel('get_' . $idColumn);
-
         $res = parent::update();
         // 重置缓存
-        ModelCacheManager::deleteOne($this->$getterMethod(), get_called_class());
+        ModelCacheManager::delete($this);
         return $res;
     }
 
     public function save(): ResultInterface
     {
-        $idColumn = ModelCacheManager::getPrimaryKey(get_called_class());
-        $getterMethod = StringHelper::camel('get_' . $idColumn);
-
         $res = parent::save();
         // 重置缓存
-        ModelCacheManager::deleteOne($this->$getterMethod(), get_called_class());
+        ModelCacheManager::delete($this);
         return $res;
     }
 
     public function delete(): ResultInterface
     {
-        $idColumn = ModelCacheManager::getPrimaryKey(get_called_class());
-        $getterMethod = StringHelper::camel('get_' . $idColumn);
-
         $res = parent::delete();
-        ModelCacheManager::deleteOne($this->$getterMethod(), get_called_class());
+        // 重置缓存
+        ModelCacheManager::delete($this);
+        return $res;
+    }
+
+    public function saveModel()
+    {
+        $res = parent::save()->getResult();
+        // 重置缓存
+        ModelCacheManager::delete($this);
+        return $res;
+    }
+
+    public function updateModel()
+    {
+        $res = parent::update()->getResult();
+        // 重置缓存
+        ModelCacheManager::delete($this);
+        return $res;
+    }
+
+    public function deleteModel()
+    {
+        $res = parent::delete()->getResult();
+        // 重置缓存
+        ModelCacheManager::delete($this);
         return $res;
     }
 }

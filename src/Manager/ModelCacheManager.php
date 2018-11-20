@@ -161,6 +161,21 @@ class ModelCacheManager
     }
 
     /**
+     * 删除缓存
+     * @author limx
+     * @param Model $model
+     */
+    public static function delete(Model $model)
+    {
+        $className = get_class($model);
+        $idColumn = static::getPrimaryKey($className);
+        $getterMethod = StringHelper::camel('get_' . $idColumn);
+
+        $id = $model->$getterMethod();
+        return static::deleteOne($id, $className);
+    }
+
+    /**
      * 设置缓存
      * @author limx
      * @param $id

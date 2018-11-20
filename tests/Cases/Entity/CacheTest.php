@@ -226,4 +226,28 @@ class CacheTest extends AbstractMysqlCase
             $this->testFindByNotHash();
         });
     }
+
+    public function testCreateDelCache()
+    {
+        $user = new User();
+        $user->setName(uniqid());
+        $user->setRoleId(1);
+        $user->setUpdatedAt(date('Y-m-d H:i:s'));
+        $user->setCreatedAt(date('Y-m-d H:i:s'));
+        $id = $user->save()->getResult();
+
+        $nextId = $id + 1;
+        $user = User::findOneByCache($nextId);
+        $this->assertEquals(null, $user);
+
+        $user = new User();
+        $user->setName(uniqid());
+        $user->setRoleId(1);
+        $user->setUpdatedAt(date('Y-m-d H:i:s'));
+        $user->setCreatedAt(date('Y-m-d H:i:s'));
+        $id = $user->saveModel();
+
+        $user = User::findOneByCache($id);
+        $this->assertNotEquals(null, $user);
+    }
 }
