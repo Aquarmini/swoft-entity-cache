@@ -43,11 +43,5 @@
                 "config/components.php"
             ]
         }
-    },
-    "repositories": {
-        "swoft-redis": {
-            "type": "git",
-            "url": "https://github.com/forkgroup/swoft-redis.git"
-        }
     }
 }
