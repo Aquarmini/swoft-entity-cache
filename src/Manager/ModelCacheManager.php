@@ -111,13 +111,17 @@ class ModelCacheManager
         $idColumn = static::getPrimaryKey($className);
         $idMethod = 'get' . StringHelper::studly($idColumn);
 
-        // 获取lua脚本对用的sha
-        $luaSha = bean(LuaSha::class);
-        $sha = $luaSha->get(HashsGetMultiple::class);
         $command = new HashsGetMultiple();
 
+        $sha = '';
+        if ($config->isLoadScript()) {
+            // 获取lua脚本对用的sha
+            $luaSha = bean(LuaSha::class);
+            $sha = $luaSha->get(HashsGetMultiple::class);
+        }
+
         // 批量获取缓存
-        if (!empty($sha) && $config->isLoadScript()) {
+        if (!empty($sha)) {
             $list = $redis->evalSha($sha, $keys, count($keys));
         } else {
             $script = $command->getScript();
